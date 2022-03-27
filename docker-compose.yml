@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    platform: linux/x86_64
+    container_name: docker_mysql
+    image: mysql
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_NAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    depends_on:
+      - mysql
+    container_name: docker_phpmyadmin
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 3456:80
+    environment:
+      PMA_HOST: mysql
+    # volumes:
+    #   - ./php_myadmin:/etc/phpmyadmin
